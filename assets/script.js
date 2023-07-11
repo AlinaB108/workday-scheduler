@@ -8,16 +8,14 @@ $('#currentDay').text(todayDate.format('MMM D, YYYY'));
 // in the html.
 $(function () {
   // Added $(this) to tell JS I need to save a text from this particular field of text
-  $(".saveBtn").on('click', function(event) {
-  event.preventDefault();
-    // Used $(this).children to get the children of the parent element
-    var text = $(this).children(".description").val();
-    //Used $(this).parent to set the parent element which is id in this case (we have only one ID in this document)
-    var time = $(this).parent().attr("id");
+  $(".saveBtn").on('click', function() {
+    //Added $(this) to save text from the particular line of text where we click save button
+    var time = $(this).parent().attr("id").split('-')[1];
+    var text = $(this).parent().find(".description").val();
 
     localStorage.setItem(time,text);
-    //For now the value is undefined
-})
+});
+
   // How might the id be useful when saving the description in local storage?
   
   // TODO: Add code to apply the past, present, or future class to each time
@@ -43,7 +41,6 @@ $(function () {
   //   $(this).removeClass("present");
   //   $(this).addClass("future");
   // };
-
   // TODO: Add code to get any user input that was saved in localStorage and set
   // the values of the corresponding textarea elements. HINT: How can the id
   // attribute of each time-block be used to do this?

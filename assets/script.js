@@ -1,38 +1,40 @@
-//Adding a current date in the header of the page
-//Might need to put it into the function
-var todayDate = dayjs();
-$('#currentDay').text(todayDate.format('MMM D, YYYY'));
-
-$(function (workSchedule) {
+$(function () {
   //A button function with event listener
   $(".saveBtn").on('click', function() {
+    // var saveText = $('#saveText');
+    // var textLine = $('<p>');
+    // textLine.text('Appointment added to Local storage');
+    // saveText.append(textLine);
+
     //Added $(this) to save text from the particular line of text where we click save button
     var time = $(this).parent().attr("id").split('-')[1];
     var text = $(this).parent().find(".description").val();
 
     localStorage.setItem(time,text);
 });  
-  //How can Day.js be used to get the current hour in 24-hour time?
-  //Need to think about it!
 
+  var currentTime = dayjs().format('HH');
   //Used .each function to loop through each element
   $(".time-block").each(function () {
-    var timeBlock = ($(this).attr("id").split("hour")[1]);
+    var timeBlock = ($(this).attr("id").split('-')[1]);
 
-    if (timeBlock < todayDate) {
-      $(this).removeClass("future");
-      $(this).removeClass("present");
-      $(this).addClass("past");
+    //Shows the saved text we added to local storage
+    var textField = localStorage.getItem(timeBlock);
+    var textArea = $(this).find('.description');
+    textArea.val(textField);
+
+    if (timeBlock < currentTime) {
+      $(this).find('.description').addClass("past");
     }
-    else if (timeBlock === todayDate) {
-      $(this).removeClass("past");
-      $(this).removeClass("future");
-      $(this).addClass("present");
+    else if (timeBlock == currentTime) {
+      $(this).find('.description').addClass("present");
     }
     else {
-      $(this).removeClass("past");
-      $(this).removeClass("present");
-      $(this).addClass("future");
+      $(this).find('.description').addClass("future");
     }
   });
+
+  //Added code to display time on top of the page
+  var todayDate = dayjs();
+  $('#currentDay').text(todayDate.format('MMM D, YYYY'));
 });
